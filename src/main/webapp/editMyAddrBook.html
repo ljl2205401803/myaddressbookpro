@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+	<script src="js/vue.js"></script>
+	<script src="js/axios.min.js"></script>
+	<script src="js/common.js"></script>
+</head>
+<body>
+     <div id="editMyaddrbook">
+<!--     <font color="red">${message}</font>-->
+	<form >
+		<table border="1">
+			<tr>
+				<td colspan="2"><h1>Add New Contact Details</h1></td>
+			</tr>
+			<tr>
+				<td>firstName:
+					<!-- 使用隐藏表单域存储id -->
+					<input type="hidden" name="id" v-model="myAddrBook.id"/>
+				</td>
+				<td><input type="text" name="firstName" v-model="myAddrBook.firstName"/></td>
+			</tr>
+			<tr>
+				<td>lastName:</td>
+				<td><input type="text" name="lastName" v-model="myAddrBook.lastName"/></td>
+			</tr>
+			<tr>
+				<td>jobTitle:</td>
+				<td><input type="text" name="jobTitle" v-model="myAddrBook.jobTitle"/></td>
+			</tr>
+			<tr>
+				<td>department:</td>
+				<td><input type="text" name="department" v-model="myAddrBook.department"/></td>
+			</tr>
+			<tr>
+				<td>mobile:</td>
+				<td><input type="text" name="mobile" v-model="myAddrBook.mobile"/></td>
+			</tr>
+			<tr>
+				<td>offPh:</td>
+				<td><input type="text" name="offPh" v-model="myAddrBook.offPh"/></td>
+			</tr>
+			<tr>
+				<td>email:</td>
+				<td><input type="text" name="email" v-model="myAddrBook.email"/></td>
+			</tr>
+			<tr>
+				<td><input type="button" @click.stop="updatefun()" value="Save"/></td>
+				<td><input type="reset" value="Cancel"/>
+					<a href="javascript:history.go(-1);">返回</a>
+				</td>
+			</tr>
+		</table>
+	</form>
+	</div>
+</body>
+<script>
+	var d="http://localhost:8082/myaddressbookpro02/editMyAddrBook.html?id=1";
+	var path=getRootPath();
+	new Vue({
+		el:"#editMyaddrbook",
+		data:{
+			myAddrBook: {}
+		},
+		methods:{
+			updatefun:function () {
+				axios.post(path+'editMyAddrBook.action',this.myAddrBook).then(function (response) {
+					obj = response.data;
+					if(obj.res == 1){
+						alert("保存成功");
+						history.go(-1);
+					}else{
+						alert("保存失败");
+					}
+					console.log(response.data);
+				}).catch(function (err) {
+					console.log(err);
+				})
+			}
+		},
+		created(){
+			var self = this;
+			var id = getUrlParam('id');
+			axios.get(path+'findMyAddrBookList.action',{
+				params:{
+					id: id
+				}
+			}).then(function (respose) {
+				self.myAddrBook = respose.data;
+				console.log(respose.data);
+			}).catch(function (err) {
+				console.log(err)
+			})
+		}
+	})
+</script>
+</html>

@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<title>Insert title here</title>
+	<script src="js/vue.js"></script>
+	<script src="js/axios.min.js"></script>
+	<script src="js/common.js"></script>
+</head>
+<body>
+<div id="myaddrBook">
+    <form action="deleteMyAddrBookByIdes.action" method="POST" name="myForm">
+	<font color="red">{{message}}</font>
+	<table>
+		<tr>
+			<td colspan="7"><h1>Welcome to My Address Book</h1></td>
+		</tr>
+	</table>
+	<table border="1">
+		<tr>
+			<th><input type="checkbox" name="selected"/></th>
+			<th>firstName</th>
+			<th>lastName</th>
+			<th>jobTitle</th>
+			<th>department</th>
+			<th>mobile</th>
+			<th>offPh</th>
+			<th>email</th>
+			<th></th>
+		</tr>
+
+			<tr v-for="myAddrBook in myAddrBookList">
+				<td><input type="checkbox" name="ides" v-model="myAddrBook.id"/></td>
+				<td><a :href="editfun(myAddrBook.id)">{{myAddrBook.firstName}}</a></td>
+				<td>{{myAddrBook.lastName}}</td>
+				<td>{{myAddrBook.jobTitle}}</td>
+				<td>{{myAddrBook.department}}</td>
+				<td>{{myAddrBook.mobile}}</td>
+				<td>{{myAddrBook.offPh}}</td>
+				<td>{{myAddrBook.email}}</td>
+				<td><a :href="'deleteMyAddrBook.action?id='+ myAddrBook.id+''">删除</a></td>
+			</tr>
+
+	</table>
+<!--	<a href="editMyAddrBook.jsp">Add new Contact</a>-->
+<!--	<a href="javascript:document.myForm.submit();">Deleted Selected MyAddrBook</a>-->
+	</form>
+</div>
+<script>
+	var path=getRootPath();
+	new Vue({
+		el: '#myaddrBook',
+		data:{
+			message: '通讯录',
+			myAddrBookList: [
+				{id:1,firstName:'li',lastName:'xi',jobTitle:'stu',department:'cs',
+					mobile:'15678906789',offPh:'0738-7896234',email:'yuu@163.com'},
+				{id:2,firstName:'wang',lastName:'xi',jobTitle:'stu02',department:'ld',
+					mobile:'15678906780',offPh:'0738-7896235',email:'yio@163.com'}
+			]
+		},
+		methods:{
+			editfun:function (id) {
+				return path+'editMyAddrBook.html?id='+id;
+			}
+		},
+		created(){
+			var self = this;
+			// axios.get(path+'findMyAddrBookList.action').then(function (respose) {
+			// 	self.myAddrBookList = respose.data;
+			// 	console.log(respose.data);
+			// }).catch(function (err) {
+			// 	console.log(err);
+			// })
+		}
+
+	})
+</script>
+</body>
+</html>
